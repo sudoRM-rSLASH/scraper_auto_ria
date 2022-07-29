@@ -17,8 +17,8 @@ class BigClass(object):
 
 
     def get_all_cars(self):
-        for page in range(1, self.page_count):
-            url = self.url + f'?page={page}'
+        for page in range(0, self.page_count):
+            url = self.url + f'page={page}&size=30'
             req = requests.get(url,
                                headers=self.header)
             content = BeautifulSoup(req.text, "html.parser")
