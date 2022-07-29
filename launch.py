@@ -1,6 +1,9 @@
 from logic import BigClass
 
-page_count = 3
+try:
+    page_count = int(input('Enter number of pages'))
+except ValueError:
+    page_count = 1
 
 if __name__ == "__main__":
     basic = BigClass(''
