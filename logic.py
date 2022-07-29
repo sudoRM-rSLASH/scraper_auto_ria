@@ -8,7 +8,6 @@ from serializer import car_list, cars_1
 class BigClass(object):
     cars_urls = {}
     dates_ = []
-    num_ = 0
     cars = ''
 
     def __init__(self, url, page_count, header):
@@ -31,7 +30,6 @@ class BigClass(object):
                 data = car_url.find('div', class_="footer_ticket").find('span').attrs
                 self.dates_ = data
                 self.cars_urls[f'{car_name}'] = url
-            print(self.cars_urls)
 
     def get_all_info(self):
         for url in self.cars_urls.values():
@@ -45,7 +43,6 @@ class BigClass(object):
         serialize_(car_list_)
 
     def create_db(self):
-        print(cars_1)
         db = sqlite3.connect('cars1_data.db')
 
         cur = db.cursor()
