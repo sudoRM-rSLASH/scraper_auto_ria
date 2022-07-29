@@ -1,14 +1,18 @@
 import requests
 import sqlite3
+import pytz
 from bs4 import BeautifulSoup
+from datetime import datetime
 from serializer import serialize, serialize_
 from serializer import car_list, cars_1
+
 
 
 class BigClass(object):
     cars_urls = {}
     dates_ = []
     cars = ''
+    tz_here = pytz.timezone("Europe/Kiev")
 
     def __init__(self, url, page_count, header):
         self.url = url
@@ -17,6 +21,8 @@ class BigClass(object):
 
 
     def get_all_cars(self):
+
+        print(f'start at {datetime.now(tz=self.tz_here).strftime("%Y-%m-%d %H:%M")}')
         for page in range(0, self.page_count):
             url = self.url + f'page={page}&size=30'
             req = requests.get(url,
@@ -73,4 +79,5 @@ class BigClass(object):
                         'VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)', cars_1)
         db.commit()
         db.close()
+        print(f'finished at {datetime.now(tz=self.tz_here).strftime("%Y-%m-%d %H:%M")}')
 

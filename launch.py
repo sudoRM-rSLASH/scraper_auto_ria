@@ -1,7 +1,7 @@
 from logic import BigClass
 
 try:
-    page_count = int(input('Enter number of pages'))
+    page_count = int(input('Enter number of pages \n'))
 except ValueError:
     page_count = 1
 
