@@ -23,10 +23,18 @@ def serialize(content, data, url):
         tech_info = str.join(' ', tech_info)
     except AttributeError or ValueError:
         tech_info = None
+    # try:
+    #     int(probeg.split(' ')[0])
+    #     int(name_model_year[-1])
+    # except ValueError:
+    #     probeg_per_year = None
     try:
-        probeg_per_year = int(probeg.split(' ')[0]) / (int(datetime.now().year) - int(name_model_year[-1]))
+        probeg_per_year = round(int(probeg.split(' ')[0]) / (int(datetime.now().year) - int(name_model_year[-1])), 2)
+    except ValueError:
+        probeg_per_year = None
     except ZeroDivisionError:
-        probeg_per_year = int(probeg.split(' ')[0]) / 1
+        probeg_per_year = round(int(probeg.split(' ')[0]) / 1, 2)
+
     try:
         objem = re.search(r'\d[.]\d\d?\sл\s? | \d\sл\s?', str(tech_info)).group(0)
     except AttributeError:
@@ -67,7 +75,7 @@ def serialize(content, data, url):
         "model": str.join(' ', name_model_year[1: len(name_model_year) - 1]),
         "year": name_model_year[-1],
         "probeg": probeg,
-        "probeg_per_year": f'{round(probeg_per_year, 2)} тис.км / рiк',
+        "probeg_per_year": f'{probeg_per_year} тис.км / рiк',
         "city": city,
         "korobka": korobka,
         "toplivo": toplivo,
