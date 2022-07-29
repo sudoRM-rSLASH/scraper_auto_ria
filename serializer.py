@@ -8,12 +8,21 @@ cars_1 = []
 
 def serialize(content, data, url):
     name_model_year = str(content.find('h1', class_="head").text).split(' ')
-    probeg = content.find('div', class_="technical-info", id="details").find('dd', class_="mhide").find(
-        'span', class_="argument").text
-    city = content.find('div', class_="item_inner").text
-    tech_info = content.find('div', class_="technical-info", id="details").text
-    tech_info = tech_info.replace('•', ' ').split(' ')
-    tech_info = str.join(' ', tech_info)
+    try:
+        probeg = content.find('div', class_="technical-info", id="details").find('dd', class_="mhide").find(
+            'span', class_="argument").text
+    except AttributeError:
+        probeg = None
+    try:
+        city = content.find('div', class_="item_inner").text
+    except AttributeError:
+        city = None
+    try:
+        tech_info = content.find('div', class_="technical-info", id="details").text
+        tech_info = tech_info.replace('•', ' ').split(' ')
+        tech_info = str.join(' ', tech_info)
+    except AttributeError or ValueError:
+        tech_info = None
     try:
         probeg_per_year = int(probeg.split(' ')[0]) / (int(datetime.now().year) - int(name_model_year[-1]))
     except ZeroDivisionError:
@@ -21,17 +30,17 @@ def serialize(content, data, url):
     try:
         objem = re.search(r'\d[.]\d\d?\sл\s? | \d\sл\s?', str(tech_info)).group(0)
     except AttributeError:
-        objem = re.search(r'\d[.]\d\d?\sл\s? | \d\sл\s?', str(tech_info))
+        objem = None
     try:
         korobka = re.search(r'(?i)(\W|^)(Автомат|Ручна\s/\sМеханiка)(\W|$)', str(tech_info)).group(0)
     except AttributeError:
-        korobka = re.search(r'(?i)(\W|^)(Автомат|Механiка\s/\sРучна)(\W|$)', str(tech_info))
+        korobka = None
     try:
         toplivo = re.search(
             r'(?i)(\W|^)(Бензин|Дизель|Електро|Газ\s/\sБензин|Гiбрид)(\W|$)'
             , str(tech_info)).group(0)
     except AttributeError:
-        toplivo = re.search(r'(?i)(\W|^)(Бензин|Дизель|Електро|Газ\s/\sБензин|Гiбрид)(\W|$)', str(tech_info))
+        toplivo = None
     try:
         nomer = content.find('div', class_="t-check").find('span', class_="state-num ua").text
     except AttributeError:
